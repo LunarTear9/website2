@@ -50,8 +50,14 @@ final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  
   Widget build(BuildContext context) {
-    return Scaffold(
+   final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    print(screenWidth);
+    print(screenHeight);
+    
+        return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       drawer: Drawer(
@@ -68,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-           
           ],
         ),
       ),
@@ -90,98 +95,187 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 100.0),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            _scaffoldKey.currentState?.openDrawer();
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(101, 182, 255, 227),
-                              borderRadius: BorderRadius.circular(10),
+                    padding: screenWidth < 700 ? EdgeInsets.only(left: 10.0): EdgeInsets.only(left: 100.0),
+                    child:  screenWidth < 700
+                        ? Row(children: [
+                              InkWell(
+                                onTap: () {
+                                  _scaffoldKey.currentState?.openDrawer();
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(101, 182, 255, 227),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(Icons.menu),
+                                ),
+                              ),
+                              screenWidth > 600 ? SizedBox(
+                                width: 120,
+                                height: 20,
+                              )
+                              : SizedBox(
+                               
+                              ),
+                            ],)
+                        : Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  _scaffoldKey.currentState?.openDrawer();
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(101, 182, 255, 227),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(Icons.menu),
+                                ),
+                              ),
+                              screenWidth > 700 ? SizedBox(
+                                width: 120,
+                                height: 20,
+                              )
+                              : SizedBox(
+                               
+                              ),
+                            ],
+                          ),
+                  ),
+                    screenWidth < 700
+                      ? Container(child:
+                        Expanded(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage('lib/assets/icon.png'),
+                              height: 125,
+                              width: 125,
                             ),
-                            child: Icon(Icons.menu),
                           ),
                         ),
-                        SizedBox(
-                          width: 120,
-                          height: 20,
+                      ) // Empty container as a placeholder
+                      : Expanded(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage('lib/assets/icon.png'),
+                              height: 125,
+                              width: 125,
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Image(
-                        image: AssetImage('lib/assets/icon.png'),
-                        height: 125,
-                        width: 125,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 50),
-                        child: Switch(
-                          activeColor: Color.fromARGB(255, 0, 7, 143),
-                          activeThumbImage:
-                              AssetImage('lib/assets/sky.png'),
-                          inactiveThumbImage:
-                              AssetImage('lib/assets/cloudy (1).png'),
-                          inactiveTrackColor: Colors.lightBlue,
-                          value: switchValue,
-                          onChanged: (value) {
-                            setState(() {
-                              switchValue = value;
+                     screenWidth < 600
+                      ? Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Switch(
+                                activeColor: Color.fromARGB(255, 0, 7, 143),
+                                activeThumbImage: AssetImage('lib/assets/sky.png'),
+                                inactiveThumbImage: AssetImage('lib/assets/cloudy (1).png'),
+                                inactiveTrackColor: Colors.lightBlue,
+                                value: switchValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    switchValue = value;
 
-                              if(!switchValue == true){
-
-                              Color1 = Color.fromRGBO(10, 167, 133, 1.0);
-                              }
-
-
-                              else if(!switchValue == false){
-                                Color1 = Color.fromRGBO(29, 29, 29, 1);
-                              }
-
-                            });
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 100),
-                        child: MouseRegion(
-                          onEnter: (event) {
-                            setState(() {
-                              TextColor = Colors.white;
-                            });
-                          },
-                          onExit: (event) {
-                            setState(() {
-                              TextColor = Colors.black;
-                            });
-                          },
-                          child: InkWell(
-                            onTap: () {
-                              context.replace('/second');
-                            },
-                            child: Text(
-                              "Feedback",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: TextColor,
+                                    if (!switchValue) {
+                                      Color1 = Color.fromRGBO(10, 167, 133, 1.0);
+                                    } else {
+                                      Color1 = Color.fromRGBO(29, 29, 29, 1);
+                                    }
+                                  });
+                                },
                               ),
                             ),
-                          ),
+                            Visibility(
+                              visible: false,
+                              child:Padding(
+                              padding: EdgeInsets.only(right: 100),
+                              child: MouseRegion(
+                                onEnter: (event) {
+                                  setState(() {
+                                    TextColor = Colors.white;
+                                  });
+                                },
+                                onExit: (event) {
+                                  setState(() {
+                                    TextColor = Colors.black;
+                                  });
+                                },
+                                child: InkWell(
+                                  onTap: () {
+                                    // Replace with your navigation method
+                                    Navigator.pushNamed(context, '/second');
+                                  },
+                                  child: Text(
+                                    "Feedback",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: TextColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),)
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 50),
+                              child: Switch(
+                                activeColor: Color.fromARGB(255, 0, 7, 143),
+                                activeThumbImage: AssetImage('lib/assets/sky.png'),
+                                inactiveThumbImage: AssetImage('lib/assets/cloudy (1).png'),
+                                inactiveTrackColor: Colors.lightBlue,
+                                value: switchValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    switchValue = value;
+
+                                    if (!switchValue) {
+                                      Color1 = Color.fromRGBO(10, 167, 133, 1.0);
+                                    } else {
+                                      Color1 = Color.fromRGBO(29, 29, 29, 1);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 100),
+                              child: MouseRegion(
+                                onEnter: (event) {
+                                  setState(() {
+                                    TextColor = Colors.white;
+                                  });
+                                },
+                                onExit: (event) {
+                                  setState(() {
+                                    TextColor = Colors.black;
+                                  });
+                                },
+                                child: InkWell(
+                                  onTap: () {
+                                    // Replace with your navigation method
+                                    Navigator.pushNamed(context, '/second');
+                                  },
+                                  child: Text(
+                                    "Feedback",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: TextColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  )
                 ],
               ),
               Padding(
@@ -192,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(20),
                 child: Text(
                   "PROJECTS",
-                  style: TextStyle(
+                  style: screenWidth < 600 ?TextStyle(
                     shadows: [
                       Shadow(
                         blurRadius: 10.0,
@@ -200,14 +294,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         offset: Offset(5.0, 5.0),
                       ),
                     ],
-                    fontSize: 75,
+                    fontSize: 65,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ): TextStyle(
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10.0,
+                        color: Colors.black,
+                        offset: Offset(5.0, 5.0),
+                      ),
+                    ],
+                    fontSize: 100,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   print("Tapped");
                 },
                 child: ProjectItem(
@@ -218,25 +323,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               InkWell(
-             onTap: () {},
-              child:
-              ProjectItem(
-                text: "Car Project",
-                imagePath: 'lib/assets/GT-Sport-03-1080-Main.png',
-                dropdownChild: customContainer(),
-                url: "https://github.com/costasphot/car",
-              ),),
+                onTap: () {},
+                child: ProjectItem(
+                  text: "Car Project",
+                  imagePath: 'lib/assets/GT-Sport-03-1080-Main.png',
+                  dropdownChild: customContainer(),
+                  url: "https://github.com/costasphot/car",
+                ),
+              ),
               InkWell(
                 onTap: () {},
-                child:
-              
-              
-              ProjectItem(
-                text: "Toei Line App",
-                imagePath: 'lib/assets/Toei-Type5522-1.jpg',
-                dropdownChild: customContainer(),
-                url: "https://github.com/LunarTear9/japantransportapp",
-              ),)
+                child: ProjectItem(
+                  text: "Toei Line App",
+                  imagePath: 'lib/assets/Toei-Type5522-1.jpg',
+                  dropdownChild: customContainer(),
+                  url: "https://github.com/LunarTear9/japantransportapp",
+                ),
+              ),
             ],
           ),
         ),
