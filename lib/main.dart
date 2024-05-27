@@ -319,7 +319,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: "Weather App",
                   imagePath: 'lib/assets/background.png',
                   dropdownChild: customContainer(),
-                  url: "https://github.com/LunarTear9/Weather-App",
+                  url: "https://flweather.pitmtech.com",
+                  githubUrl: "https://github.com/LunarTear9/Weather-App",
+                  icon: Image(image: AssetImage('lib/assets/Dart-logo-icon.svg (1) (1) (1).png')),
+
+                  icon2: Image(image: AssetImage('lib/assets/Flutter_logo.svg (1) (1).png')),
                 ),
               ),
               InkWell(
@@ -328,7 +332,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: "Car Project",
                   imagePath: 'lib/assets/GT-Sport-03-1080-Main.png',
                   dropdownChild: customContainer(),
-                  url: "https://github.com/costasphot/car",
+                  url: "",
+                  githubUrl: "https://github.com/costasphot/car",
+                  icon: Image(image: AssetImage('lib/assets/cpp_logo (1).png')),
+                  icon2: null,
                 ),
               ),
               InkWell(
@@ -337,7 +344,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: "Toei Line App",
                   imagePath: 'lib/assets/Toei-Type5522-1.jpg',
                   dropdownChild: customContainer(),
-                  url: "https://github.com/LunarTear9/japantransportapp",
+                  
+                  url: "https://toei.pitmtech.com",
+                  githubUrl: "https://github.com/LunarTear9/japantransportapp",
+                  icon: Image(image: AssetImage('lib/assets/Dart-logo-icon.svg (1) (1) (1).png')), 
+                  icon2: Image(image: AssetImage('lib/assets/Flutter_logo.svg (1) (1).png')),
                 ),
               ),
             ],
@@ -353,6 +364,9 @@ class ProjectItem extends StatefulWidget {
   final String imagePath;
   final Widget dropdownChild;
   final String url;
+  final String githubUrl;
+  final dynamic icon;
+  final dynamic icon2;
 
   const ProjectItem({
     Key? key,
@@ -360,6 +374,9 @@ class ProjectItem extends StatefulWidget {
     required this.imagePath,
     required this.dropdownChild,
     required this.url,
+    required this.githubUrl,
+    required this.icon,
+    this.icon2,
   }) : super(key: key);
 
   @override
@@ -370,39 +387,51 @@ class _ProjectItemState extends State<ProjectItem> {
   bool isExpanded = false;
 
   Future<void> _launchURL() async {
-    if (await canLaunch(widget.url)) {
-      await launch(widget.url);
-    } else {
-      throw 'Could not launch ${widget.url}';
+    if(widget.url != "") {
+      if (await canLaunch(widget.url)) {
+        await launch(widget.url);
+      } else {
+        throw 'Could not launch ${widget.url}';
+      }
     }
+   
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            _launchURL();
-            setState(() {
-            
-            });
-          },
-          child: CustomClipRRect(
-            text: widget.text,
-            imagePath: widget.imagePath,
+    return Stack(
+      children: [Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              _launchURL();
+              setState(() {
+              
+              });
+            },
+            child: CustomClipRRect(
+              text: widget.text,
+              imagePath: widget.imagePath,
+              url: widget.githubUrl,
+              icon: widget.icon,
+
+              icon2: widget.icon2,
+              
+            ),
           ),
-        ),
-        AnimatedCrossFade(
-          duration: Duration(milliseconds: 200),
-          firstChild: SizedBox(),
-          secondChild: widget.dropdownChild,
-          crossFadeState: isExpanded
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-        ),
-        SizedBox(height: 20, width: 20),
-      ],
+          AnimatedCrossFade(
+            duration: Duration(milliseconds: 200),
+            firstChild: SizedBox(),
+            secondChild: widget.dropdownChild,
+            crossFadeState: isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+          ),
+          SizedBox(height: 20, width: 20),
+        ],
+      ),]
     );
   }
 }
@@ -441,11 +470,17 @@ class SecondScreen extends StatelessWidget {
 class CustomClipRRect extends StatefulWidget {
   final String text;
   final String imagePath;
+  final String url;
+  final dynamic icon;
+  final dynamic icon2;
 
   const CustomClipRRect({
     Key? key,
     required this.text,
     required this.imagePath,
+    required this.url,
+    required this.icon,
+    this.icon2,
   }) : super(key: key);
 
   @override
@@ -455,6 +490,16 @@ class CustomClipRRect extends StatefulWidget {
 class _CustomClipRRectState extends State<CustomClipRRect> {
   bool isHovered = false;
 
+Future<void> _launchURL() async {
+    if(widget.url != "") {
+      if (await canLaunch(widget.url)) {
+        await launch(widget.url);
+      } else {
+        throw 'Could not launch ${widget.url}';
+      }
+    }
+   
+  }
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -486,23 +531,33 @@ class _CustomClipRRectState extends State<CustomClipRRect> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Center(
-                    child: Text(
-                      widget.text,
-                      style: TextStyle(
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10.0,
-                            color: Colors.black,
-                            offset: Offset(5.0, 5.0),
-                          ),
-                        ],
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: ListTile(
+                    trailing: InkWell(onTap: (){_launchURL();},child: ClipRRect(borderRadius: BorderRadius.circular(18),child: Container(height: 50,width: 52,color: Color.fromARGB(120, 211, 211, 211),child: Image(image: AssetImage('lib/assets/25231 (1).png'))))),
+                    subtitle:  Row(children: [
+                      ClipRRect(borderRadius: BorderRadius.circular(19),child: Container(height: 40, width: 40,color: Color.fromARGB(219, 255, 255, 255),child:widget.icon)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: 
+                      widget.icon2 != null ? ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(height: 40,width: 40,color: Color.fromARGB(217, 255, 255, 255),child: widget.icon2)) : SizedBox(),)
+                    ],),
+title: Text(
+                    widget.text,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      shadows:  [
+                        Shadow(
+                          blurRadius: 10.0,
+                          color: Colors.black,
+                          offset: Offset(5.0, 5.0),
+                        ),
+                      ],
+                      fontSize: 30,
+                      color: Colors.white,
                     ),
-                  ),
+
+),),
                   height: 100,
                   width: 600,
                 ),
